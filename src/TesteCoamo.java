@@ -1,6 +1,7 @@
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.lang.Math;
 public class TesteCoamo {
     public static class Produto {
         private String nome;
@@ -198,24 +199,75 @@ public class TesteCoamo {
             System.out.println("Valor do Produto: " + c.getValorPorProduto());
         }
         System.out.println("Valor total: " + valorTotal);
-
+        double valorDesconto = 0;
+        
         System.out.println("""
+                Insira o método de pagamento: 
+                1. À vista
+                2. A prazo
+                """);
+        int formaPagamento = scanner.nextInt();
+        if(formaPagamento == 1){
+            System.out.println("""
                     Insira o seu conceito para prosseguir com a compra:
                     1. (A) - Excelente
                     2. (B) - Bom
                     3. (C) - Básico
                     """);
 
-        int conceito = scanner.nextInt();
+            int conceito = scanner.nextInt();
+            double desconto = 0;
 
-        double desconto = 0;
+            if(conceito == 1){
+                desconto = 0.05;
+            } else if(conceito == 2){
+                desconto = 0.03;
+            }
+            
+            valorDesconto = valorTotal - (valorTotal*desconto);
+            System.out.println("Valor com desconto à vista: " + valorDesconto);
+        } else{
+            System.out.println("""
+                    Insira o seu conceito para prosseguir com a compra:
+                    1. (A) - Excelente
+                    2. (B) - Bom
+                    3. (C) - Básico
+                    """);
+            int conceito = scanner.nextInt();
+            System.out.println("Insira o número de dias a parcelar: ");
+            int numDias = scanner.nextInt();
+            double desconto = 0;
+            double valorJuros = 0;
+            double valorFinal = 0;
 
-        if(conceito == 1){
-            desconto = 0.05;
-        } else if(conceito == 2){
-            desconto = 0.03;
+            if(conceito == 1){
+                desconto = 0.05;
+            } else if(conceito == 2){
+                desconto = 0.03;
+            }
+
+            valorDesconto = valorTotal - (valorTotal*desconto);
+
+            valorJuros = valorTotal * ((Math.pow((1 + (0.12/100)), numDias)) - 1);
+            valorFinal = valorDesconto + valorJuros;
+            System.out.println("Juros: " + valorJuros + " ao mês");
+            System.out.println("Valor com desconto a prazo: " + valorDesconto);
+            System.out.println("Valor com desconto a prazo após juros aplicados: " + valorFinal);
         }
-
-
+        
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
