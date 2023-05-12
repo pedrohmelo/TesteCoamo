@@ -87,22 +87,6 @@ public class TesteCoamo {
         }
     }
 
-    public static class Desconto{
-        public Desconto(Integer desconto) {
-            this.desconto = desconto;
-        }
-
-        public Integer getDesconto() {
-            return desconto;
-        }
-
-        public void setDesconto(Integer desconto) {
-            this.desconto = desconto;
-        }
-
-        private Integer desconto;
-    }
-
     public static void main(String[] args) {
         List<Categoria> categorias = new ArrayList<>();
         List<Carrinho> carrinho = new ArrayList<>();
@@ -110,7 +94,6 @@ public class TesteCoamo {
 
         int totalCategorias = 0;
 
-        //LIST<TIPO> VARIAVEL
         Categoria categoria1 = new Categoria("Fertilizantes");
         categoria1.addProduto(new Produto("Fertilizante A", 10.0, "Categoria 1"));
         categoria1.addProduto(new Produto("Fertilizante B", 20.0, "Categoria 1"));
@@ -144,7 +127,6 @@ public class TesteCoamo {
         Scanner scanner = new Scanner(System.in);
         int opcao = 1;
         while(opcao == 1) {
-
             System.out.println("Selecione a categoria do produto que deseja comprar:");
             for (int i = 0; i < categorias.size(); i++){
                 Categoria categoria = categorias.get(i);
@@ -248,9 +230,8 @@ public class TesteCoamo {
             }
             
             valorDesconto = valorTotal - (valorTotal*(desconto + valorDescontoCategorias));
-            System.out.println("Valor com desconto à vista: " + valorDesconto);
+            System.out.println("Valor com desconto à vista: R$ " + valorDesconto);
             //System.out.println("QUANTIDADE DE CATEGORIAS DA COMPRA: " + totalCategorias);
-
         } else{
             System.out.println("""
                     Insira o seu conceito para prosseguir com a compra:
