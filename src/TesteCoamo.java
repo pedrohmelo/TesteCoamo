@@ -1,3 +1,5 @@
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -104,6 +106,10 @@ public class TesteCoamo {
     public static void main(String[] args) {
         List<Categoria> categorias = new ArrayList<>();
         List<Carrinho> carrinho = new ArrayList<>();
+        List<Boolean> categoriasSelecionadas = Arrays.asList(false, false, false, false, false);
+
+        int totalCategorias = 0;
+
         //LIST<TIPO> VARIAVEL
         Categoria categoria1 = new Categoria("Fertilizantes");
         categoria1.addProduto(new Produto("Fertilizante A", 10.0, "Categoria 1"));
@@ -173,13 +179,18 @@ public class TesteCoamo {
             int quantidade = scanner.nextInt();
             //inserindo o produto/quantidade na lista carrinho
             carrinho.add(new Carrinho(produtoSelecionado, quantidade));
-            System.out.println("Nome do produto: " + carrinho.get(0).getProduto().getNome());
-            System.out.println("Quantidade: " + carrinho.get(0).getQuantidade());
-            System.out.println("Valor dos produtos: " + carrinho.get(0).getValorPorProduto());
+            //a negação é para não repetir a inserção da mesma categoria novamente.
+            if(!categoriasSelecionadas.get(opcaoCategoria-1)){
+                categoriasSelecionadas.set(opcaoCategoria-1, true);
+                totalCategorias++; //AQUI É FEITA A CONTAGEM!!!!!!!!!
+            }
 
+            for(int i = 0; i < carrinho.size(); i++ ) {
+                System.out.println("Nome do produto: " + carrinho.get(i).getProduto().getNome());
+                System.out.println("Quantidade: " + carrinho.get(i).getQuantidade());
+                System.out.println("Valor dos produtos: R$ " + carrinho.get(i).getValorPorProduto());
+            }
 
-//            System.out.println("PRODUTO SELECIONADO: " + produtoSelecionado.getNome());
-//            System.out.println("QUANTIDADE: " + quantidade + " " + produtoSelecionado.getNome());
             System.out.println("""
                     Deseja comprar outro produto?
                     1 - Sim
@@ -188,18 +199,18 @@ public class TesteCoamo {
             opcao = scanner.nextInt();
         }
 
-        //System.out.println("Preço de venda: " + (quantidade * produtoSelecionado.getPrecoVenda()));
         double valorTotal = 0;
         double valorPorProduto = 0;
         for(Carrinho c : carrinho){
-            //valorTotal += c.getProduto().getPrecoVenda() * c.getQuantidade();
             valorTotal += c.getValorPorProduto();
             System.out.println("Nome do Produto: " + c.getProduto().getNome());
             System.out.println("Quantidade: " + c.getQuantidade());
-            System.out.println("Valor do Produto: " + c.getValorPorProduto());
+            System.out.println("Valor do Produto: R$ " + c.getValorPorProduto());
         }
         System.out.println("Valor total: " + valorTotal);
+
         double valorDesconto = 0;
+        double valorDescontoCategorias = 0;
         
         System.out.println("""
                 Insira o método de pagamento: 
@@ -223,9 +234,23 @@ public class TesteCoamo {
             } else if(conceito == 2){
                 desconto = 0.03;
             }
+
+            if(totalCategorias == 1){
+                valorDescontoCategorias = 0.01;
+            } else if(totalCategorias == 2){
+                valorDescontoCategorias = 0.02;
+            } else if(totalCategorias == 3){
+                valorDescontoCategorias = 0.03;
+            } else if(totalCategorias == 4){
+                valorDescontoCategorias = 0.04;
+            } else if(totalCategorias == 5){
+                valorDescontoCategorias = 0.05;
+            }
             
-            valorDesconto = valorTotal - (valorTotal*desconto);
+            valorDesconto = valorTotal - (valorTotal*(desconto + valorDescontoCategorias));
             System.out.println("Valor com desconto à vista: " + valorDesconto);
+            //System.out.println("QUANTIDADE DE CATEGORIAS DA COMPRA: " + totalCategorias);
+
         } else{
             System.out.println("""
                     Insira o seu conceito para prosseguir com a compra:
@@ -246,28 +271,26 @@ public class TesteCoamo {
                 desconto = 0.03;
             }
 
-            valorDesconto = valorTotal - (valorTotal*desconto);
+            if(totalCategorias == 1){
+                valorDescontoCategorias = 0.01;
+            } else if(totalCategorias == 2){
+                valorDescontoCategorias = 0.02;
+            } else if(totalCategorias == 3){
+                valorDescontoCategorias = 0.03;
+            } else if(totalCategorias == 4){
+                valorDescontoCategorias = 0.04;
+            } else if(totalCategorias == 5){
+                valorDescontoCategorias = 0.05;
+            }
+
+            valorDesconto = valorTotal - (valorTotal*(desconto + valorDescontoCategorias));
 
             valorJuros = valorTotal * ((Math.pow((1 + (0.12/100)), numDias)) - 1);
             valorFinal = valorDesconto + valorJuros;
-            System.out.println("Juros: " + valorJuros + " ao mês");
-            System.out.println("Valor com desconto a prazo: " + valorDesconto);
-            System.out.println("Valor com desconto a prazo após juros aplicados: " + valorFinal);
+            System.out.println("Juros: R$ " + valorJuros + " ao mês");
+            System.out.println("Valor com desconto a prazo: R$ " + valorDesconto);
+            System.out.println("Valor com desconto a prazo após juros aplicados: R$ " + valorFinal);
+            //System.out.println("QUANTIDADE DE CATEGORIAS DA COMPRA: " + totalCategorias);
         }
-        
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
